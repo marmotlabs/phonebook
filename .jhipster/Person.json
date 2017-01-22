@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170106161302",
+    "javadoc": "A person that can have multiple phone numbers",
+    "entityTableName": "person",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass"
+}

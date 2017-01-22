@@ -1,0 +1,8 @@
+version: '2'
+services:
+    phonebook-sonar:
+        container_name: phonebook-sonar
+        image: sonarqube:6.1-alpine
+        ports:
+            - 9000:9000
+            - 9092:9092

@@ -1,0 +1,25 @@
+/**
+ * A person that can have multiple phone numbers
+ */
+entity Person {
+  id Long required,
+  name String required
+}
+
+/**
+ * A phone number of a person
+ */
+entity Number {
+  id Long required,
+  number String required
+}
+
+/**
+ * A person can have multiple numbers
+ */
+relationship ManyToOne {
+  Number{person} to Person
+}
+
+paginate all with pagination
+service all with serviceClass
