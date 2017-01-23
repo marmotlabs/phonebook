@@ -23,8 +23,10 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -158,6 +160,33 @@ public class PhonebookStepDefs {
             // More here: https://github.com/jayway/JsonPath
             actions.andExpect(jsonPath("$[?(@.name =='" + row.get("name") + "')]").exists());
         }
+    }
+
+    @When("^I delete person with the name '(.*)'$")
+    public void thePersonIsDeleted(String name) throws Throwable {
+        Long id = personRepository
+                .findAll()
+                .stream()
+                .filter(person -> person.getName().equals(name))
+                .findFirst()
+                .get()
+                .getId();
+        actions = mockMvc.perform(delete("/api/people/" + id).accept(MediaType.APPLICATION_JSON));
+    }
+
+    @When("^I update the person with the name '(.*)' by '(.*)'$")
+    public void thePersonIsUpdated(String oldName, String newName) throws Throwable {
+        Long id = personRepository
+                .findAll()
+                .stream()
+                .filter(person -> person.getName().equals(oldName))
+                .findFirst()
+                .get()
+                .getId();
+        actions = mockMvc.perform(put("/api/people" )
+                .content("{\"name\": \"" + newName + "\", \"id\": \"" + id + "\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
     }
 
 }
