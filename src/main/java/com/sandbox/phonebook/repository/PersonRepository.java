@@ -1,10 +1,7 @@
 package com.sandbox.phonebook.repository;
 
 import com.sandbox.phonebook.domain.Person;
-
-import org.springframework.data.jpa.repository.*;
-
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Spring Data JPA repository for the Person entity.
