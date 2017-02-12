@@ -6,11 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Service Implementation for managing Person.
@@ -20,7 +19,7 @@ import java.util.List;
 public class PersonService {
 
     private final Logger log = LoggerFactory.getLogger(PersonService.class);
-    
+
     @Inject
     private PersonRepository personRepository;
 
@@ -32,17 +31,19 @@ public class PersonService {
      */
     public Person save(Person person) {
         log.debug("Request to save Person : {}", person);
-        Person result = personRepository.save(person);
-        return result;
+        if (personRepository.findAll().stream().anyMatch(it -> it.getName().equals(person.getName()))) {
+            throw new RuntimeException();
+        }
+        return personRepository.save(person);
     }
 
     /**
-     *  Get all the people.
-     *  
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * Get all the people.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public Page<Person> findAll(Pageable pageable) {
         log.debug("Request to get all People");
         Page<Person> result = personRepository.findAll(pageable);
@@ -50,12 +51,12 @@ public class PersonService {
     }
 
     /**
-     *  Get one person by id.
+     * Get one person by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public Person findOne(Long id) {
         log.debug("Request to get Person : {}", id);
         Person person = personRepository.findOne(id);
@@ -63,9 +64,9 @@ public class PersonService {
     }
 
     /**
-     *  Delete the  person by id.
+     * Delete the  person by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Person : {}", id);

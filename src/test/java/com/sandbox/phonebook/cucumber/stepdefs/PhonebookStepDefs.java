@@ -6,6 +6,7 @@ import com.sandbox.phonebook.repository.NumberRepository;
 import com.sandbox.phonebook.repository.PersonRepository;
 import cucumber.api.DataTable;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -89,6 +90,13 @@ public class PhonebookStepDefs {
 
         actions
                 .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+    }
+
+    @Then("^the person is not created$")
+    public void thePersonIsNotCreated() throws Throwable {
+        actions
+                .andExpect(status().is5xxServerError())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
@@ -183,10 +191,52 @@ public class PhonebookStepDefs {
                 .findFirst()
                 .get()
                 .getId();
-        actions = mockMvc.perform(put("/api/people" )
+        actions = mockMvc.perform(put("/api/people")
                 .content("{\"name\": \"" + newName + "\", \"id\": \"" + id + "\"}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
 
+//    @When("^I add phone number '(.*)' to person '(.*)'$")
+//    public void iAddPhoneNumberToPerson(String phoneNumber, String personName) throws Throwable {
+//        Long personId = personRepository
+//                .findAll()
+//                .stream()
+//                .filter(person -> person.getName().equals(personName))
+//                .findFirst()
+//                .get().getId();
+//        actions = mockMvc.perform(post("/api/numbers")
+//                .content("{\"number\": \"" + phoneNumber + "\",\"person\":{\"name\": \"" + personName + "\", \"id\": \"" + personId + "\"}}")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON));
+//
+//
+//    }
+//
+//    @Then("^the phone number is added$")
+//    public void thePhoneNumberIsAdded() throws Throwable {
+//        assertThat(numberRepository.count()).isEqualTo(1L);
+//
+//        actions
+//                .andExpect(status().isCreated())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+//    }
+//
+//    @And("^'(.*)' has now the new phoneNumber '(.*)'$")
+//    public void personHasNowTheNewPhoneNumber(String personName, String phoneNumber) throws Throwable {
+//        numberRepository.findAll().stream().findFirst().filter(it -> it.getPerson().getName().equals(personName));
+//        assertThat(
+//                numberRepository
+//                        .findAll()
+//                        .stream()
+//                        .findFirst()
+//                        .filter(it -> it.getPerson().getName().equals(personName))
+//                        .get().getNumber().equals(phoneNumber));
+//
+//        // According to: https://github.com/jayway/JsonPath
+//        // $.name is something like: [{"name": "sofia}]
+//        // ----------------------------^
+//        actions.andExpect(jsonPath("$.number").value(phoneNumber));
+//        actions.andExpect(jsonPath("$.person.name").value(personName));
+//    }
 }
