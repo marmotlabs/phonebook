@@ -55,8 +55,8 @@ public class PhonebookStepDefs {
     @Before
     public void setup() {
         // Clear the DB
-        personRepository.deleteAll();
         numberRepository.deleteAll();
+        personRepository.deleteAll();
 
         // Builds the mock MVC
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -197,46 +197,46 @@ public class PhonebookStepDefs {
                 .accept(MediaType.APPLICATION_JSON));
     }
 
-//    @When("^I add phone number '(.*)' to person '(.*)'$")
-//    public void iAddPhoneNumberToPerson(String phoneNumber, String personName) throws Throwable {
-//        Long personId = personRepository
-//                .findAll()
-//                .stream()
-//                .filter(person -> person.getName().equals(personName))
-//                .findFirst()
-//                .get().getId();
-//        actions = mockMvc.perform(post("/api/numbers")
-//                .content("{\"number\": \"" + phoneNumber + "\",\"person\":{\"name\": \"" + personName + "\", \"id\": \"" + personId + "\"}}")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON));
-//
-//
-//    }
-//
-//    @Then("^the phone number is added$")
-//    public void thePhoneNumberIsAdded() throws Throwable {
-//        assertThat(numberRepository.count()).isEqualTo(1L);
-//
-//        actions
-//                .andExpect(status().isCreated())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-//    }
-//
-//    @And("^'(.*)' has now the new phoneNumber '(.*)'$")
-//    public void personHasNowTheNewPhoneNumber(String personName, String phoneNumber) throws Throwable {
-//        numberRepository.findAll().stream().findFirst().filter(it -> it.getPerson().getName().equals(personName));
-//        assertThat(
-//                numberRepository
-//                        .findAll()
-//                        .stream()
-//                        .findFirst()
-//                        .filter(it -> it.getPerson().getName().equals(personName))
-//                        .get().getNumber().equals(phoneNumber));
-//
-//        // According to: https://github.com/jayway/JsonPath
-//        // $.name is something like: [{"name": "sofia}]
-//        // ----------------------------^
-//        actions.andExpect(jsonPath("$.number").value(phoneNumber));
-//        actions.andExpect(jsonPath("$.person.name").value(personName));
-//    }
+    @When("^I add phone number '(.*)' to person '(.*)'$")
+    public void iAddPhoneNumberToPerson(String phoneNumber, String personName) throws Throwable {
+        Long personId = personRepository
+                .findAll()
+                .stream()
+                .filter(person -> person.getName().equals(personName))
+                .findFirst()
+                .get().getId();
+        actions = mockMvc.perform(post("/api/numbers")
+                .content("{\"number\": \"" + phoneNumber + "\",\"person\":{\"name\": \"" + personName + "\", \"id\": \"" + personId + "\"}}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+
+    }
+
+    @Then("^the phone number is added$")
+    public void thePhoneNumberIsAdded() throws Throwable {
+        assertThat(numberRepository.count()).isEqualTo(1L);
+
+        actions
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+    }
+
+    @And("^'(.*)' has now the new phoneNumber '(.*)'$")
+    public void personHasNowTheNewPhoneNumber(String personName, String phoneNumber) throws Throwable {
+        numberRepository.findAll().stream().findFirst().filter(it -> it.getPerson().getName().equals(personName));
+        assertThat(
+                numberRepository
+                        .findAll()
+                        .stream()
+                        .findFirst()
+                        .filter(it -> it.getPerson().getName().equals(personName))
+                        .get().getNumber().equals(phoneNumber));
+
+        // According to: https://github.com/jayway/JsonPath
+        // $.name is something like: [{"name": "sofia}]
+        // ----------------------------^
+        actions.andExpect(jsonPath("$.number").value(phoneNumber));
+        actions.andExpect(jsonPath("$.person.name").value(personName));
+    }
 }

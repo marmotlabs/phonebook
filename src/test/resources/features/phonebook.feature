@@ -70,11 +70,11 @@ Feature: Person management
       | ana  | 22  |
       | yoyo | 3   |
 
-#  Scenario: Add a phone number to person
-#    Given these are the people already created
-#      | name  | age |
-#      | sofia | 22  |
-#      | yoyo  | 3   |
-#    When I add phone number '3334445' to person 'sofia'
-#    Then the phone number is added
-#    And 'sofia' has now the new phoneNumber '3334445'
+  Scenario: Add a phone number to person
+    Given these are the people already created
+      | name  | age |
+      | sofia | 22  |
+      | yoyo  | 3   |
+    When I add phone number '3334445' to person 'sofia'
+    Then the phone number is added
+    And 'sofia' has now the new phoneNumber '3334445'
