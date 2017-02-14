@@ -5,6 +5,7 @@ import com.sandbox.phonebook.domain.Person;
 import com.sandbox.phonebook.repository.NumberRepository;
 import com.sandbox.phonebook.repository.PersonRepository;
 import cucumber.api.DataTable;
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -86,8 +87,6 @@ public class PhonebookStepDefs {
      */
     @Then("^the person is created$")
     public void thePersonIsCreated() throws Throwable {
-        assertThat(personRepository.count()).isEqualTo(1L);
-
         actions
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
@@ -111,8 +110,6 @@ public class PhonebookStepDefs {
      */
     @Then("^her name is '(.*)'$")
     public void herNameIs(String name) throws Throwable {
-        assertThat(personRepository.findAll().get(0).getName()).isEqualTo(name);
-
         // According to: https://github.com/jayway/JsonPath
         // $.name is something like: [{"name": "sofia}]
         // ----------------------------^
@@ -224,7 +221,6 @@ public class PhonebookStepDefs {
 
     @And("^'(.*)' has now the new phoneNumber '(.*)'$")
     public void personHasNowTheNewPhoneNumber(String personName, String phoneNumber) throws Throwable {
-        numberRepository.findAll().stream().findFirst().filter(it -> it.getPerson().getName().equals(personName));
         assertThat(
                 numberRepository
                         .findAll()

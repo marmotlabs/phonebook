@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = {"src/test/resources/features/"},
         glue = {"com.sandbox.phonebook.cucumber.stepdefs"},
-        format = {"pretty", "json:target/cucumber.json", "html:target/cucumber"}
+        format = {"pretty", "json:target/cucumber.json", "html:target/cucumber"},
+        tags = {}
 )
 public class PhonebookCucumberRunner {
 }
